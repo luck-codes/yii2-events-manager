@@ -1,0 +1,21 @@
+{
+    "name": "luckcodes/yii2-events-manager",
+    "description": "Organization of connection of events through the component: Event manager.",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "luckcodes",
+            "email": "myluck@internet.ru"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "luckcodes\\eventsmanager\\": ""
+        }
+    }
+}
