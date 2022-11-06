@@ -31,7 +31,7 @@ php composer.phar require --prefer-dist luckcodes/yii2-events-manager "dev-maste
 ```
 'components' => [
     'eventsManager' => [
-        'class'=>'luckcodes\eventsmanager\components\EventManager',
+        'class'=>'luckcodes\eventsmanager\components\EventsManager',
     ]
 ]
 ```
@@ -41,7 +41,7 @@ php composer.phar require --prefer-dist luckcodes/yii2-events-manager "dev-maste
 ```
 'components' => [
     'eventsManager' => [
-        'class'=>'luckcodes\eventsmanager\components\EventManager',
+        'class'=>'luckcodes\eventsmanager\components\EventsManager',
         'events'=>[
            'common\test\BlockTpl' =>[
               'init_shortcode' =>[
@@ -66,7 +66,7 @@ php composer.phar require --prefer-dist luckcodes/yii2-events-manager "dev-maste
 ```
 'components' => [
     'eventsManager' => [
-        'class'=>'luckcodes\eventsmanager\components\EventManager',
+        'class'=>'luckcodes\eventsmanager\components\EventsManager',
         'eventsConnectors'=>[
            [
                'class'=>'luckcodes\items\handlers\events\ConnectEventsFrontend',
@@ -80,7 +80,7 @@ php composer.phar require --prefer-dist luckcodes/yii2-events-manager "dev-maste
 ```
 'components' => [
     'eventsManager' => [
-        'class'=>'luckcodes\eventsmanager\components\EventManager',
+        'class'=>'luckcodes\eventsmanager\components\EventsManager',
         'eventsConnectors'=>[
            ['luckcodes\items\handlers\events\ConnectEventsFrontend','connect']
         ],
