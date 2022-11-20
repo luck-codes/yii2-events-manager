@@ -2,7 +2,7 @@
     "name": "luckcodes/yii2-events-manager",
     "description": "Organization of connection of events through the component: Event manager.",
     "type": "yii2-extension",
-    "keywords": ["yii2","extension"],
+    "keywords": ["yii2","extension","events","manager"],
     "license": "MIT",
     "authors": [
         {
