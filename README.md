@@ -15,13 +15,13 @@
 Либо запустить
 
 ```
-php composer.phar require --prefer-dist luckcodes/yii2-events-manager "dev-master"
+php composer.phar require --prefer-dist luckcodes/yii2-events-manager "~3.0"
 ```
 
 или добавить
 
 ```
-"luckcodes/yii2-events-manager": "dev-master"
+"luckcodes/yii2-events-manager": "~3.0"
 ```
 
 в требуемый раздел вашего `composer.json` файл.
@@ -68,63 +68,41 @@ php composer.phar require --prefer-dist luckcodes/yii2-events-manager "dev-maste
     'eventsManager' => [
         'class'=>'luckcodes\eventsmanager\components\EventsManager',
         'eventsConnectors'=>[
-           [
-               'class'=>'luckcodes\items\handlers\events\ConnectEventsFrontend',
-               'method' => 'connect'
-           ],
-        ],
-    ]
-]
-```
-или короткая форма
-```
-'components' => [
-    'eventsManager' => [
-        'class'=>'luckcodes\eventsmanager\components\EventsManager',
-        'eventsConnectors'=>[
-           ['luckcodes\items\handlers\events\ConnectEventsFrontend','connect']
+           'luckcodes\items\handlers\events\ConnectEventsFrontend'
         ],
     ]
 ]
 ```
 
-При вызове обработчика, в метод будет передан экземпляр объекта `Events Manager`
+Класс `luckcodes\items\handlers\events\ConnectEventsFrontend` должен быть дочерним класом `luckcodes\eventsmanager\classes\AddHandlers`
 
 ### Пример дополнительного обработчика подключения событий
 файл: `luckcodes\items\handlers\events\ConnectEventsFrontend`
 
-```<?php
+```
+<?php
 
-namespace luckcodes\items\handlers\events;
+namespace luckcodes\themeblocks\src\handlers;
 
-use luckcodes\eventsmanager\components\EventsManager;
+use luckcodes\eventsmanager\classes\AddHandlers;
 
-class ConnectEventsFrontend
+class EventsManagerHandler extends AddHandlers
 {
-    static function connect( EventsManager $eventManagerObj)
+    public function connect()
     {
-        $eventManagerObj->addEventHandler(
+        $this->addEventHandler(
             'common\components\MenuBuilder',
             'menu_build',
-            ['common\modules\item\eventhandler\MenuBuilderComponent', 'addOptionsMenu']
+            'common\modules\item\eventhandler\MenuBuilderComponent',
+            'addOptionsMenu'
         );
-        
-        $eventManagerObj->addEventHandler(
-            'common\components\MenuBuilder',
-            'menu_build2',
-            ['common\modules\item\eventhandler\MenuBuilderComponent2', 'addOptionsMenu']
-        ); 
-        
-        ....
     }
 }
 ```
 
-Данный класс подключит к событию `menu_build` обработчик `common\modules\item\eventhandler\MenuBuilderComponent` 
+Данный класс подключит к событию `menu_build` класса `common\components\MenuBuilder` обработчик `common\modules\item\eventhandler\MenuBuilderComponent` 
 и будет вызван метод `addOptionsMenu`.
 
-А также подключит к событию `menu_build2` обработчик `common\modules\item\eventhandler\MenuBuilderComponent2`
-и будет вызван метод `addOptionsMenu`.
 
 ## Поведение
 Для удобства в пакет включено поведение `luckcodes\eventsmanager\behaviors\EventsManagerBehavior`.

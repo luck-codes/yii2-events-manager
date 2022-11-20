@@ -3,10 +3,11 @@
 namespace luckcodes\eventsmanager\components;
 
 
+use luckcodes\eventsmanager\classes\AddHandlers;
 /**
  * Class EventManager
  * @package luckcodes\eventmanager\components
- * @version 2.0
+ * @version 3.0
  */
 class EventsManager
 {
@@ -16,22 +17,17 @@ class EventsManager
     private $connectorConnected = false;
 
     /**
-     * подключение классов, в которых будет динамическое подключение к событиям
+     * Connecting Handlers
      */
-    function loadDinamicConnectors()
+    private function loadDinamicConnectors()
     {
         if (!$this->connectorConnected && $this->eventsConnectors) {
             foreach ($this->eventsConnectors as $handler) {
-
-                if (isset($handler['class'], $handler['method'])) {
-                    $class = $handler['class'];
-                    $method = $handler['method'];
-                } elseif (isset($handler[0], $handler[1])) {
-                    $class = $handler[0];
-                    $method = $handler[1];
-                }
-                if ($class && $method && is_callable([$class,$method], true, $callable_name)) {
-                    call_user_func($callable_name, $this);
+                $class = new $handler($this);
+                if ($class instanceof AddHandlers) {
+                    $class->connect();
+                }else{
+                    throw new \Exception('"'.get_class($class) .'" is not a class inheritor "'.AddHandlers::class.'"');
                 }
             }
             $this->connectorConnected = true;
@@ -45,15 +41,16 @@ class EventsManager
     }
 
     /**
-     * addEvents('common\test\BlockTpl','init_shortcode', ['common\eventhandler\MainBlocksHandler', 'shortcode'])
-     * common\test\BlockTpl - namespace путь файла в котором будет инициализировано событие
+     * addEvents('common\test\BlockTpl','init_shortcode', 'common\eventhandler\MainBlocksHandler', 'shortcode')
+     * 'common\test\BlockTpl' - class, в котором будет инициализировано событие
      * 'init_shortcode' - имя события
-     * ['common\eventhandler\MainBlocksHandler', 'shortcode'] - 1 параметр путь к классу обработчика, 2- имя функции вызываемое при событии
+     * 'common\eventhandler\MainBlocksHandler' путь к классу обработчика
+     * 'shortcode' - имя метода вызываемое при событии
      */
 
-    public function addEventHandler($componentNameSpacePath, $eventName, $handlerData)
+    public function addEventHandler($componentNameSpacePath, $eventName, $handler, $handlerMethod)
     {
-        $this->events[$componentNameSpacePath][$eventName][] = $handlerData;
+        $this->events[$componentNameSpacePath][$eventName][] = [$handler, $handlerMethod];
     }
 
 }
